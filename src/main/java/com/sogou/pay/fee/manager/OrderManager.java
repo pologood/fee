@@ -226,7 +226,7 @@ public class OrderManager {
             orderIds = backword ? orderMapper.backward(paging) : orderMapper.forward(paging);
         }
 
-        return new ApiResult<List>(orderIds);
+        return new ApiResult<List>(paging.pages(orderIds, count));
 
     }
 
@@ -360,23 +360,24 @@ public class OrderManager {
         String bpPayappcode = BpPayChannel.convToBpChannel(order.getPayChanel()).getName();
         String bpReturnUrl = "https://pay.sogou.com";
 
-        BpPaymentReqData bpPaymentReqData = new BpPaymentReqData(bpRequstType, bpForwarType, bpBillId,
-                bpAccountCode, bpBillType, bpProductId, bpProductName, bpProType, bpProAmount, bpOperator,
-                bpProvince, bpDenominationprice, bpPayappcode, bpReturnUrl);
+        BpPaymentReqData bpPaymentReqData = new BpPaymentReqData()
+                .setRequesttype(bpRequstType)
+                .setForwardtype(bpForwarType)
+                .setBillid(bpBillId)
+                .setAcctcode(bpAccountCode)
+                .setBilltype(bpBillType)
+                .setProdid(bpProductId)
+                .setProdname(bpProductName)
+                .setProdtype(bpProType)
+                .setProdamount(bpProAmount)
+                .setOwnoperator(bpOperator)
+                .setOwnprovince(bpProvince)
+                .setProddenominationprice(bpDenominationprice)
+                .setPayappcode(bpPayappcode)
+                .setReturnurl(bpReturnUrl);
 
         return bpPaymentReqData;
     }
-
-//    public static void main(String[] args) throws Exception{
-//        List<String> phones=new ArrayList<>();
-//        phones.add("18600539639");
-//        BpPhoneInfoReqData bpPhoneInfoReq = new BpPhoneInfoReqData(phones);
-//        String dataToEncrypt1 = JsonHelper.writeValueAsString(bpPhoneInfoReq);
-//        System.out.println(dataToEncrypt1);
-//        String dataToEncrypt2=new String(dataToEncrypt1.getBytes(),"UTF-8");
-//        System.out.println(dataToEncrypt2);
-//
-//    }
 
 
 }

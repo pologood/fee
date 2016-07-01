@@ -26,137 +26,134 @@ public class BpPaymentReqData extends BluePlusBaseData {
     private String payappcode;
     private String returnurl;
 
-    public BpPaymentReqData(String requesttype, String forwardtype, String billid,
-                            String acctcode, String billtype, String prodid,
-                            String prodname, String prodtype, String prodamount,
-                            String ownoperator, String ownprovince, String proddenominationprice,
-                            String payappcode, String returnurl) {
+    public BpPaymentReqData(){
         super(BP_PAYMENT_CODE, BP_PAYMENT_METHOD);
-        this.requesttype = requesttype;
-        this.forwardtype = forwardtype;
-        this.billid = billid;
-        this.acctcode = acctcode;
-        this.billtype = billtype;
-        this.prodid = prodid;
-        this.prodname = prodname;
-        this.prodtype = prodtype;
-        this.prodamount = prodamount;
-        this.ownoperator = ownoperator;
-        this.ownprovince = ownprovince;
-        this.proddenominationprice = proddenominationprice;
-        this.payappcode = payappcode;
-        this.returnurl = returnurl;
     }
+
 
     public String getRequesttype() {
         return requesttype;
     }
 
-    public void setRequesttype(String requesttype) {
+    public BpPaymentReqData setRequesttype(String requesttype) {
         this.requesttype = requesttype;
+        return this;
     }
 
     public String getForwardtype() {
         return forwardtype;
     }
 
-    public void setForwardtype(String forwardtype) {
+    public BpPaymentReqData setForwardtype(String forwardtype) {
         this.forwardtype = forwardtype;
+        return this;
     }
 
     public String getBillid() {
         return billid;
     }
 
-    public void setBillid(String billid) {
+    public BpPaymentReqData setBillid(String billid) {
         this.billid = billid;
+        return this;
     }
 
     public String getAcctcode() {
         return acctcode;
     }
 
-    public void setAcctcode(String acctcode) {
+    public BpPaymentReqData setAcctcode(String acctcode) {
         this.acctcode = acctcode;
+        return this;
     }
 
     public String getBilltype() {
         return billtype;
     }
 
-    public void setBilltype(String billtype) {
+    public BpPaymentReqData setBilltype(String billtype) {
         this.billtype = billtype;
+        return this;
     }
 
     public String getProdid() {
         return prodid;
     }
 
-    public void setProdid(String prodid) {
+    public BpPaymentReqData setProdid(String prodid) {
         this.prodid = prodid;
+        return this;
     }
 
     public String getProdname() {
         return prodname;
     }
 
-    public void setProdname(String prodname) {
+    public BpPaymentReqData setProdname(String prodname) {
         this.prodname = prodname;
+        return this;
     }
 
     public String getProdtype() {
         return prodtype;
     }
 
-    public void setProdtype(String prodtype) {
+    public BpPaymentReqData setProdtype(String prodtype) {
         this.prodtype = prodtype;
+        return this;
     }
 
     public String getProdamount() {
         return prodamount;
     }
 
-    public void setProdamount(String prodamount) {
+    public BpPaymentReqData setProdamount(String prodamount) {
         this.prodamount = prodamount;
+        return this;
     }
 
     public String getOwnoperator() {
         return ownoperator;
     }
 
-    public void setOwnoperator(String ownoperator) {
+    public BpPaymentReqData setOwnoperator(String ownoperator) {
         this.ownoperator = ownoperator;
+        return this;
     }
 
     public String getOwnprovince() {
         return ownprovince;
     }
 
-    public void setOwnprovince(String ownprovince) {
+    public BpPaymentReqData setOwnprovince(String ownprovince) {
         this.ownprovince = ownprovince;
+        return this;
     }
 
     public String getProddenominationprice() {
         return proddenominationprice;
     }
 
-    public void setProddenominationprice(String proddenominationprice) {
+    public BpPaymentReqData setProddenominationprice(String proddenominationprice) {
         this.proddenominationprice = proddenominationprice;
+        return this;
     }
 
     public String getPayappcode() {
         return payappcode;
     }
 
-    public void setPayappcode(String payappcode) {
+    public BpPaymentReqData setPayappcode(String payappcode) {
         this.payappcode = payappcode;
+        return this;
     }
 
     public String getReturnurl() {
         return returnurl;
     }
 
-    public void setReturnurl(String returnurl) {
+    public BpPaymentReqData setReturnurl(String returnurl) {
         this.returnurl = returnurl;
+        return this;
     }
 }
