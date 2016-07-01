@@ -1,6 +1,9 @@
 package com.sogou.pay.fee.config;
 
+import com.sogou.pay.fee.service.BpRestService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.context.annotation.*;
@@ -13,6 +16,8 @@ import redis.clients.jedis.JedisPool;
 import commons.spring.LoggerFilter;
 
 import commons.saas.RestNameService;
+
+import java.util.Arrays;
 
 @Configuration
 @EnableScheduling
@@ -61,6 +66,11 @@ public class RootConfig {
   }
 
   @Bean
+  public BpRestService bpRestService() {
+    return new BpRestService(env);
+  }
+
+  @Bean
   public RestTemplate restTemplate() {
     HttpComponentsClientHttpRequestFactory factory =
       new HttpComponentsClientHttpRequestFactory();
@@ -68,6 +78,15 @@ public class RootConfig {
     factory.setReadTimeout(Integer.parseInt(env.getProperty("rest.timeout.read", "10000")));
     return new RestTemplate(factory);
   }
-  
+
+  @Bean
+  public RestTemplate bpRestTemplate() {
+    RestTemplate restTemplate = new RestTemplate();
+    MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();
+    mappingJackson2HttpMessageConverter.setSupportedMediaTypes(Arrays.asList(MediaType.APPLICATION_JSON, MediaType.APPLICATION_OCTET_STREAM));
+    restTemplate.getMessageConverters().add(mappingJackson2HttpMessageConverter);
+    return restTemplate;
+
+  }
   
 }

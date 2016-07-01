@@ -24,7 +24,9 @@ public class WebConfig extends WebMvcConfigurerAdapter {
   public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
     StringHttpMessageConverter stringConverter = new StringHttpMessageConverter();
     stringConverter.setWriteAcceptCharset(false);
-    converters.add(stringConverter);    
+    converters.add(stringConverter);
+
+    converters.add(new FormHttpMessageConverter());
       
     Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder();
     builder.featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
