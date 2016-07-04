@@ -2,6 +2,7 @@ package com.sogou.pay.fee.api;
 
 
 import com.sogou.pay.fee.entity.Order;
+import com.sogou.pay.fee.entity.Product;
 import com.sogou.pay.fee.manager.OrderManager;
 import com.sogou.pay.fee.model.*;
 import org.jsondoc.core.annotation.Api;
@@ -49,9 +50,9 @@ public class OrderController {
     @RequestMapping(value = "/phoneProducts", method = RequestMethod.GET)
     public ApiResult queryPhoneProducts(
             @ApiQueryParam(name = "feeType", description = "phone or flow")
-            @RequestParam FeeType feeType,
+            @RequestParam Product.FeeType feeType,
             @ApiQueryParam(name = "operator", description = "operator")
-            @RequestParam Operator operator,
+            @RequestParam PhoneInfo.Operator operator,
             @ApiQueryParam(name = "province", description = "province")
             @RequestParam String province) {
 
@@ -69,7 +70,7 @@ public class OrderController {
             @ApiQueryParam(name = "specifiedNo", description = "specifiedNo")
             @RequestParam Optional<String> specifiedNo,
             @ApiQueryParam(name = "feetype", description = "feetype")
-            @RequestParam FeeType feeType,
+            @RequestParam Product.FeeType feeType,
             @ApiQueryParam(name = "productId", description = "productId")
             @RequestParam long productId,
             @ApiQueryParam(name = "quantity", description = "quantity")
@@ -81,7 +82,7 @@ public class OrderController {
             @ApiQueryParam(name = "province", description = "province code")
             @RequestParam String province,
             @ApiQueryParam(name = "operator", description = "operator code")
-            @RequestParam Operator operator) {
+            @RequestParam PhoneInfo.Operator operator) {
         Order order = new Order();
         if (userId.isPresent()) {
             order.setUserId(userId.get());
@@ -114,33 +115,33 @@ public class OrderController {
     @RequestMapping(value = "/orders/count", method = RequestMethod.GET)
     public ApiResult countOrders(
             @ApiQueryParam(name = "queryType", description = "query type,phone or user")
-            @RequestParam Optional<QueryOrderType> queryType,
+            @RequestParam Optional<Order.QueryOrderType> queryType,
             @ApiQueryParam(name = "userId", description = "userId")
             @RequestParam Optional<String> userId,
             @ApiQueryParam(name = "phone", description = "phone")
             @RequestParam Optional<String> phone
     ) {
-        return orderManager.countOrders(queryType.orElse(QueryOrderType.BY_PHONE), userId, phone);
+        return orderManager.countOrders(queryType.orElse(Order.QueryOrderType.BY_PHONE), userId, phone);
     }
 
     @ApiMethod(description = "query first order pages")
     @RequestMapping(value = "/orders/pages", method = RequestMethod.GET)
     public ApiResult firstPage(
             @ApiQueryParam(name = "queryType", description = "query type,phone or user")
-            @RequestParam Optional<QueryOrderType> queryType,
+            @RequestParam Optional<Order.QueryOrderType> queryType,
             @ApiQueryParam(name = "userId", description = "userId")
             @RequestParam Optional<String> userId,
             @ApiQueryParam(name = "phone", description = "phone")
             @RequestParam Optional<String> phone
     ) {
-        return orderManager.pages(queryType.orElse(QueryOrderType.BY_PHONE), userId, phone, -1, pages, count, true);
+        return orderManager.pages(queryType.orElse(Order.QueryOrderType.BY_PHONE), userId, phone, -1, pages, count, true);
     }
 
     @ApiMethod(description = "query order pages forward by orderId")
     @RequestMapping(value = "/orders/pages/forward", method = RequestMethod.GET)
     public ApiResult forwardPage(
             @ApiQueryParam(name = "queryType", description = "query type,phone or user")
-            @RequestParam Optional<QueryOrderType> queryType,
+            @RequestParam Optional<Order.QueryOrderType> queryType,
             @ApiQueryParam(name = "userId", description = "userId")
             @RequestParam Optional<String> userId,
             @ApiQueryParam(name = "phone", description = "phone")
@@ -148,14 +149,14 @@ public class OrderController {
             @ApiQueryParam(name = "orderId", description = "orderId")
             @RequestParam long orderId
     ) {
-        return orderManager.pages(queryType.orElse(QueryOrderType.BY_PHONE), userId, phone, orderId, pages, count, false);
+        return orderManager.pages(queryType.orElse(Order.QueryOrderType.BY_PHONE), userId, phone, orderId, pages, count, false);
     }
 
     @ApiMethod(description = "query order pages backward by orderId")
     @RequestMapping(value = "/orders/pages/backward", method = RequestMethod.GET)
     public ApiResult backwardPage(
             @ApiQueryParam(name = "queryType", description = "query type,phone or user")
-            @RequestParam Optional<QueryOrderType> queryType,
+            @RequestParam Optional<Order.QueryOrderType> queryType,
             @ApiQueryParam(name = "userId", description = "userId")
             @RequestParam Optional<String> userId,
             @ApiQueryParam(name = "phone", description = "phone")
@@ -163,14 +164,14 @@ public class OrderController {
             @ApiQueryParam(name = "orderId", description = "orderId")
             @RequestParam long orderId
     ) {
-        return orderManager.pages(queryType.orElse(QueryOrderType.BY_PHONE), userId, phone, orderId, pages, count, true);
+        return orderManager.pages(queryType.orElse(Order.QueryOrderType.BY_PHONE), userId, phone, orderId, pages, count, true);
     }
 
     @ApiMethod(description = "list orders backword by orderId")
     @RequestMapping(value = "/orders/list", method = RequestMethod.GET)
     public ApiResult listOrders(
             @ApiQueryParam(name = "queryType", description = "query type,phone or user")
-            @RequestParam Optional<QueryOrderType> queryType,
+            @RequestParam Optional<Order.QueryOrderType> queryType,
             @ApiQueryParam(name = "userId", description = "userId")
             @RequestParam Optional<String> userId,
             @ApiQueryParam(name = "phone", description = "phone")
@@ -178,7 +179,7 @@ public class OrderController {
             @ApiQueryParam(name = "orderId", description = "orderId")
             @RequestParam long orderId
     ) {
-        return orderManager.list(queryType.orElse(QueryOrderType.BY_PHONE), userId, phone, orderId, count);
+        return orderManager.list(queryType.orElse(Order.QueryOrderType.BY_PHONE), userId, phone, orderId, count);
     }
 
 }

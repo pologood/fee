@@ -1,6 +1,6 @@
 package com.sogou.pay.fee.config;
 
-import com.sogou.pay.fee.service.BpService;
+import com.sogou.pay.fee.service.blueplus.BpService;
 import commons.saas.RestNameService;
 import commons.spring.LoggerFilter;
 import org.springframework.beans.factory.annotation.Autowired;

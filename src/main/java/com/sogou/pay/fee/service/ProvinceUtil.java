@@ -1,4 +1,4 @@
-package com.sogou.pay.fee.entity;
+package com.sogou.pay.fee.service;
 
 import java.util.HashMap;
 import java.util.Map;

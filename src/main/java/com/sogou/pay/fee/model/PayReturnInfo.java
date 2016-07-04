@@ -12,6 +12,21 @@ public class PayReturnInfo {
     private String paymentInfo;
     private PayReturnType payReturnType;
 
+    public static enum PayReturnType {
+        STR(0), URL(1), HTML(2), UNKNOWN(3);
+        private int value;
+
+        PayReturnType(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
+
+    }
+
+
     public PayReturnInfo(Order order, String paymentInfo, PayReturnType payReturnType) {
         this.order = order;
         this.paymentInfo = paymentInfo;

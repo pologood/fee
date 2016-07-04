@@ -1,7 +1,6 @@
 package com.sogou.pay.fee.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.sogou.pay.fee.model.FeeType;
 import com.sogou.pay.fee.model.PayTerminal;
 
 import java.time.LocalDateTime;
@@ -11,14 +10,14 @@ import java.util.List;
 @JsonInclude(value = JsonInclude.Include.NON_EMPTY)
 public class Order {
 
-    public static final List<Status> STATUS_DONE= Arrays.asList(Status.PAY_FAILED, Status.FEE_SUCCESS,
+    public static final List<Status> STATUS_DONE = Arrays.asList(Status.PAY_FAILED, Status.FEE_SUCCESS,
             Status.FEE_FAILED, Status.REFUND_SUCCESS, Status.FINISHED,
             Status.CANCEL, Status.EXPIERED);
 
     public static enum Status {
         CONFIRMED(1), TOPAY(2), PAY_SUCCESS(3), PAY_FAILED(4),
         FEEING(5), FEE_SUCCESS(6), FEE_FAILED(7), REFUNDING(8),
-        REFUND_SUCCESS(9), FINISHED(10), CANCEL(11), EXPIERED(12);
+        REFUND_SUCCESS(9), FINISHED(10), CANCEL(11), EXPIERED(12), UNKNOWN(13);
 
         private int value;
 
@@ -32,16 +31,36 @@ public class Order {
 
     }
 
+    public static enum QueryOrderType {
+        BY_PHONE(1), BY_USERID(2);
+        private int value;
+
+        QueryOrderType(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
+
+    }
+
     public static enum Channel {
-        WEIXIN(1), ZHIFUBAO(2),YINLIAN(3),BAIFUBAO(4);
+        WEIXIN(1), ZHIFUBAO(2), YINLIAN(3), BAIFUBAO(4);
 
         private int value;
-        Channel(int value) { this.value = value; }
-        public int getValue() { return this.value; }
+
+        Channel(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return this.value;
+        }
     }
 
     private long orderId;
-    private FeeType feeType;
+    private Product.FeeType feeType;
     private String userId;
     private String phone;
     private String specifiedNo;
@@ -64,11 +83,11 @@ public class Order {
         this.orderId = orderId;
     }
 
-    public FeeType getFeeType() {
+    public Product.FeeType getFeeType() {
         return feeType;
     }
 
-    public void setFeeType(FeeType feeType) {
+    public void setFeeType(Product.FeeType feeType) {
         this.feeType = feeType;
     }
 

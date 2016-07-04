@@ -12,12 +12,7 @@ public class BluePlusRequestBody {
     private String sign;
     private String time;
 
-//    public BluePlusRequestBody(String partid, String data, String sign, long time) {
-//        this.partid = partid;
-//        this.data = data;
-//        this.sign = sign;
-//        this.time = time;
-//    }
+
     public BluePlusRequestBody(String partid, String data,String time,String sign) {
         this.partid = partid;
         this.data = data;

@@ -1,4 +1,4 @@
-package com.sogou.pay.fee.service;
+package com.sogou.pay.fee.service.blueplus;
 
 /**
  * Created by nahongxu on 2016/6/22.
@@ -10,6 +10,10 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.MessageDigest;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public final class BpAesUtil {
 
@@ -77,5 +81,27 @@ public final class BpAesUtil {
             return new String(result, DEFAULT_CHARSET);
         }
         return null;
+    }
+
+    /**
+     * 按照字典序逆序拼接参数
+     *
+     * @param params
+     * @return
+     */
+    public static String getSign(String... params) {
+        List<String> srcList = new ArrayList<String>();
+        for (String param : params) {
+            srcList.add(param);
+        }
+        // 按照字典序逆序拼接参数
+        Arrays.sort(params);
+        Collections.sort(srcList, String.CASE_INSENSITIVE_ORDER);
+        Collections.reverse(srcList);
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < srcList.size(); i++) {
+            sb.append(srcList.get(i));
+        }
+        return sb.toString();
     }
 }

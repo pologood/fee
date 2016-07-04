@@ -4,8 +4,11 @@ import com.sogou.pay.fee.entity.Order;
 import com.sogou.pay.fee.entity.Product;
 import com.sogou.pay.fee.mapper.OrderMapper;
 import com.sogou.pay.fee.mapper.ProductMapper;
-import com.sogou.pay.fee.model.*;
-import com.sogou.pay.fee.service.BpService;
+import com.sogou.pay.fee.model.ApiResult;
+import com.sogou.pay.fee.model.Errno;
+import com.sogou.pay.fee.model.PayReturnInfo;
+import com.sogou.pay.fee.model.PhoneInfo;
+import com.sogou.pay.fee.service.blueplus.BpService;
 import commons.mybatis.Paging;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -29,6 +32,7 @@ public class OrderManager {
 
     private String tokenKey;
 
+
     @Autowired
     public OrderManager(Environment env) {
 
@@ -41,13 +45,13 @@ public class OrderManager {
     }
 
 
-    public ApiResult queryPhoneProducts(FeeType feeType, Operator operator, String province) {
+    public ApiResult queryPhoneProducts(Product.FeeType feeType, PhoneInfo.Operator operator, String province) {
         List<Product> products = bpService.queryPhoneProducts(feeType, operator, province);
         return new ApiResult<List>(products);
 
     }
 
-    public ApiResult createOrder(Order order, String province, Operator operator) {
+    public ApiResult createOrder(Order order, String province, PhoneInfo.Operator operator) {
         int quantity = order.getQuantity();
         long productId = order.getProductId();
         Product product = productMapper.findByProductId(productId);
@@ -92,9 +96,9 @@ public class OrderManager {
 
     }
 
-    public ApiResult countOrders(QueryOrderType queryOrderType, Optional<String> userId, Optional<String> phone) {
+    public ApiResult countOrders(Order.QueryOrderType queryOrderType, Optional<String> userId, Optional<String> phone) {
         int count = 0;
-        if (queryOrderType == QueryOrderType.BY_PHONE) {
+        if (queryOrderType == Order.QueryOrderType.BY_PHONE) {
             if (!phone.isPresent()) {
                 return ApiResult.badRequest("phone is needed");
             }
@@ -109,12 +113,12 @@ public class OrderManager {
 
     }
 
-    public ApiResult pages(QueryOrderType queryOrderType, Optional<String> userId, Optional<String> phone,
+    public ApiResult pages(Order.QueryOrderType queryOrderType, Optional<String> userId, Optional<String> phone,
                            long orderId, int pages, int count, boolean backword) {
         Paging paging = new Paging().setTable(OrderMapper.Sql.TABLE)
                 .setRowId("orderId").setCount(pages, count);
 
-        if (queryOrderType == QueryOrderType.BY_PHONE) {
+        if (queryOrderType == Order.QueryOrderType.BY_PHONE) {
             if (!phone.isPresent()) {
                 return ApiResult.badRequest("phone is needed");
             }
@@ -139,11 +143,11 @@ public class OrderManager {
     }
 
 
-    public ApiResult list(QueryOrderType queryOrderType, Optional<String> userId, Optional<String> phone, long orderId, int count) {
+    public ApiResult list(Order.QueryOrderType queryOrderType, Optional<String> userId, Optional<String> phone, long orderId, int count) {
         Paging paging = new Paging().setTable(OrderMapper.Sql.TABLE)
                 .setRowId("orderId").setCount(1, count);
 
-        if (queryOrderType == QueryOrderType.BY_PHONE) {
+        if (queryOrderType == Order.QueryOrderType.BY_PHONE) {
             if (!phone.isPresent()) {
                 return ApiResult.badRequest("phone is needed");
             }

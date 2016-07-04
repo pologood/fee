@@ -1,10 +1,8 @@
 package com.sogou.pay.fee.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.sogou.pay.fee.model.FeeType;
-import com.sogou.pay.fee.service.blueplus.BpConstant;
-import com.sogou.pay.fee.service.blueplus.BpFeeType;
 import com.sogou.pay.fee.service.blueplus.BpProductInfo;
+import com.sogou.pay.fee.service.blueplus.BpService;
 
 import java.time.LocalDateTime;
 
@@ -27,6 +25,20 @@ public class Product {
         }
     }
 
+    public static enum FeeType {
+        PHONE(1), FLOW(2), ALL(3), UNKNOWN(4);
+        private int value;
+
+        FeeType(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
+
+    }
+
 
     private long productId;
     private String productName;
@@ -47,8 +59,8 @@ public class Product {
     public Product(BpProductInfo bpProductInfo) {
         this.productName = bpProductInfo.getProdname();
         this.outerId = bpProductInfo.getProdid();
-        this.providerId = BpConstant.BLUEPLUS_PROVIDER_ID;
-        this.feeType= BpFeeType.convFromBpFeeType(BpFeeType.getTypeByValue(Integer.parseInt(bpProductInfo.getProdtype())));
+        this.providerId = BpService.BLUEPLUS_PROVIDER_ID;
+        this.feeType = BpService.convFromBpFeeTypeNew(bpProductInfo.getProdtype());
         this.standardPrice = bpProductInfo.getStandardamount();
         this.realPrice = bpProductInfo.getProdamount();
         this.denominationprice = bpProductInfo.getProddenominationprice();

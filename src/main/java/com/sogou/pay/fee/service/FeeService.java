@@ -2,8 +2,6 @@ package com.sogou.pay.fee.service;
 
 import com.sogou.pay.fee.entity.Order;
 import com.sogou.pay.fee.entity.Product;
-import com.sogou.pay.fee.model.FeeType;
-import com.sogou.pay.fee.model.Operator;
 import com.sogou.pay.fee.model.PayReturnInfo;
 import com.sogou.pay.fee.model.PhoneInfo;
 import commons.utils.Tuple2;
@@ -17,9 +15,9 @@ public interface FeeService {
 
     public List<PhoneInfo> queryPhoneInfos(List<String> phones);
 
-    public List<Product> queryPhoneProducts(FeeType feeType, Operator operator, String province);
+    public List<Product> queryPhoneProducts(Product.FeeType feeType, PhoneInfo.Operator operator, String province);
 
-    public PayReturnInfo createOrder(Order order, Product product,String province, Operator operator);
+    public PayReturnInfo createOrder(Order order, Product product,String province, PhoneInfo.Operator operator);
 
     public Order.Status queryOrderStatus(Order order);
 
