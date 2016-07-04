@@ -1,7 +1,6 @@
 package com.sogou.pay.fee.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.sogou.pay.fee.model.PayTerminal;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -57,6 +56,20 @@ public class Order {
         public int getValue() {
             return this.value;
         }
+    }
+
+    public enum PayTerminal {
+        WAP(1), APP(2), PC(3), OTHERS(4);
+        private int value;
+
+        PayTerminal(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
+
     }
 
     private long orderId;

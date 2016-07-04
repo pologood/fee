@@ -78,7 +78,7 @@ public class OrderController {
             @ApiQueryParam(name = "payChannel", description = "payChannel")
             @RequestParam Order.Channel payChannel,
             @ApiQueryParam(name = "payTerminal", description = "payTerminal")
-            @RequestParam PayTerminal payTerminal,
+            @RequestParam Order.PayTerminal payTerminal,
             @ApiQueryParam(name = "province", description = "province code")
             @RequestParam String province,
             @ApiQueryParam(name = "operator", description = "operator code")

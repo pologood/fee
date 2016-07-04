@@ -5,7 +5,6 @@ import com.sogou.pay.fee.entity.Product;
 import com.sogou.pay.fee.mapper.OrderMapper;
 import com.sogou.pay.fee.mapper.ProductMapper;
 import com.sogou.pay.fee.model.PayReturnInfo;
-import com.sogou.pay.fee.model.PayTerminal;
 import com.sogou.pay.fee.model.PhoneInfo;
 import com.sogou.pay.fee.service.FeeService;
 import com.sogou.pay.fee.service.ProvinceUtil;
@@ -333,7 +332,7 @@ public class BpService implements FeeService {
         }
     }
 
-    public static String convToBpRqTypeNew(PayTerminal feePayTemin) {
+    public static String convToBpRqTypeNew(Order.PayTerminal feePayTemin) {
         switch (feePayTemin) {
             case PC:
                 return "0";
