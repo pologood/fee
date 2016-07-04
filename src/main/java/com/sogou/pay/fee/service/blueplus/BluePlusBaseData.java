@@ -1,4 +1,4 @@
-package com.sogou.pay.fee.model.blueplus;
+package com.sogou.pay.fee.service.blueplus;
 
 
 import com.fasterxml.jackson.annotation.JsonInclude;

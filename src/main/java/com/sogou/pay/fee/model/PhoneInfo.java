@@ -2,8 +2,8 @@ package com.sogou.pay.fee.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.sogou.pay.fee.entity.ProvinceUtil;
-import com.sogou.pay.fee.model.blueplus.BpOperator;
-import com.sogou.pay.fee.model.blueplus.BpPhoneInfo;
+import com.sogou.pay.fee.service.blueplus.BpOperator;
+import com.sogou.pay.fee.service.blueplus.BpPhoneInfo;
 
 /**
  * Created by nahongxu on 2016/6/22.

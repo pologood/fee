@@ -1,4 +1,4 @@
-package com.sogou.pay.fee.model.blueplus;
+package com.sogou.pay.fee.service.blueplus;
 
 /**
  * Created by nahongxu on 2016/6/24.

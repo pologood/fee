@@ -2,9 +2,9 @@ package com.sogou.pay.fee.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.sogou.pay.fee.model.FeeType;
-import com.sogou.pay.fee.model.blueplus.BpConstant;
-import com.sogou.pay.fee.model.blueplus.BpFeeType;
-import com.sogou.pay.fee.model.blueplus.BpProductInfo;
+import com.sogou.pay.fee.service.blueplus.BpConstant;
+import com.sogou.pay.fee.service.blueplus.BpFeeType;
+import com.sogou.pay.fee.service.blueplus.BpProductInfo;
 
 import java.time.LocalDateTime;
 
