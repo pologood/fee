@@ -13,49 +13,13 @@ import java.util.List;
  */
 public interface FeeService {
 
-    public List<PhoneInfo> queryPhoneInfos(List<String> phones);
+    List<PhoneInfo> queryPhoneInfos(List<String> phones);
 
-    public List<Product> queryPhoneProducts(Product.FeeType feeType, PhoneInfo.Operator operator, String province);
+    List<Product> queryPhoneProducts(Product.FeeType feeType, PhoneInfo.Operator operator, String province);
 
-    public PayReturnInfo createOrder(Order order, Product product,String province, PhoneInfo.Operator operator);
+    PayReturnInfo createOrder(Order order, Product product,String province, PhoneInfo.Operator operator);
 
-    public Order.Status queryOrderStatus(Order order);
+    Order.Status queryOrderStatus(Order order);
 
-    public static Tuple2<Product, Boolean> compareProduct(Product oldPro, Product newPro) {
-        Product productDiff = new Product();
-        productDiff.setProductId(oldPro.getProductId());
-        productDiff.setProviderId(-1);
-        productDiff.setStandardPrice(-1);
-        productDiff.setRealPrice(-1);
-        productDiff.setDenominationprice(-1);
-        productDiff.setOuterId(oldPro.getOuterId());
-        Boolean needUpdate = false;
 
-        if (!oldPro.getProductName().equals(newPro.getProductName())) {
-            productDiff.setProductName(newPro.getProductName());
-            needUpdate = true;
-        }
-
-        if (oldPro.getProviderId() != newPro.getProviderId()) {
-            productDiff.setProviderId(newPro.getProviderId());
-            needUpdate = true;
-        }
-
-        if (oldPro.getStandardPrice() != newPro.getStandardPrice()) {
-            productDiff.setStandardPrice(newPro.getStandardPrice());
-            needUpdate = true;
-        }
-
-        if (oldPro.getRealPrice() != newPro.getRealPrice()) {
-            productDiff.setRealPrice(newPro.getRealPrice());
-            needUpdate = true;
-        }
-
-        if (oldPro.getStatus() != newPro.getStatus()) {
-            productDiff.setStatus(newPro.getStatus());
-            needUpdate = true;
-        }
-
-        return new Tuple2<Product, Boolean>(productDiff, needUpdate);
-    }
 }

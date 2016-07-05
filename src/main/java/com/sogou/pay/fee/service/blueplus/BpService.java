@@ -93,7 +93,7 @@ public class BpService implements FeeService {
             if (productExist == null) {
                 productMapper.add(productNew);
             } else {
-                Tuple2<Product, Boolean> diff = FeeService.compareProduct(productExist, productNew);
+                Tuple2<Product, Boolean> diff = BpService.compareProduct(productExist, productNew);
                 if (diff.s) {
                     productMapper.update(diff.f);
                 }
@@ -166,7 +166,6 @@ public class BpService implements FeeService {
         } catch (Exception e) {
             throw new BpException(e);
         }
-
 
         BpResponseBase bpResponseBase = bpRestTemplate.postForObject(restNameService.lookup("BLUEPLUS_SERVICE"),
                 MapHelper.makeMulti("partid", partid,
@@ -359,5 +358,43 @@ public class BpService implements FeeService {
                 return PayReturnInfo.PayReturnType.UNKNOWN;
         }
 
+    }
+
+    static Tuple2<Product, Boolean> compareProduct(Product oldPro, Product newPro) {
+        Product productDiff = new Product();
+        productDiff.setProductId(oldPro.getProductId());
+        productDiff.setProviderId(-1);
+        productDiff.setStandardPrice(-1);
+        productDiff.setRealPrice(-1);
+        productDiff.setDenominationprice(-1);
+        productDiff.setOuterId(oldPro.getOuterId());
+        Boolean needUpdate = false;
+
+        if (!oldPro.getProductName().equals(newPro.getProductName())) {
+            productDiff.setProductName(newPro.getProductName());
+            needUpdate = true;
+        }
+
+        if (oldPro.getProviderId() != newPro.getProviderId()) {
+            productDiff.setProviderId(newPro.getProviderId());
+            needUpdate = true;
+        }
+
+        if (oldPro.getStandardPrice() != newPro.getStandardPrice()) {
+            productDiff.setStandardPrice(newPro.getStandardPrice());
+            needUpdate = true;
+        }
+
+        if (oldPro.getRealPrice() != newPro.getRealPrice()) {
+            productDiff.setRealPrice(newPro.getRealPrice());
+            needUpdate = true;
+        }
+
+        if (oldPro.getStatus() != newPro.getStatus()) {
+            productDiff.setStatus(newPro.getStatus());
+            needUpdate = true;
+        }
+
+        return new Tuple2<Product, Boolean>(productDiff, needUpdate);
     }
 }

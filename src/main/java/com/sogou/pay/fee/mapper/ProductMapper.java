@@ -21,11 +21,11 @@ public interface ProductMapper {
         public static String insert(Product product) {
             SQL sql = new SQL().INSERT_INTO(TABLE)
                     .VALUES("productName", "#{productName}")
-                    .VALUES("feeType","#{feeType}")
+                    .VALUES("feeType", "#{feeType}")
                     .VALUES("standardPrice", "#{standardPrice}")
                     .VALUES("realPrice", "#{realPrice}")
                     .VALUES("denominationprice", "#{denominationprice}")
-                    .VALUES("createTime","#{createTime}")
+                    .VALUES("createTime", "#{createTime}")
                     .VALUES("status", "#{status}");
 
             if (product.getOuterId() != null) {

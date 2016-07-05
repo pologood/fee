@@ -97,7 +97,7 @@ public class OrderManager {
     }
 
     public ApiResult countOrders(Order.QueryOrderType queryOrderType, Optional<String> userId, Optional<String> phone) {
-        int count = 0;
+        int count;
         if (queryOrderType == Order.QueryOrderType.BY_PHONE) {
             if (!phone.isPresent()) {
                 return ApiResult.badRequest("phone is needed");
