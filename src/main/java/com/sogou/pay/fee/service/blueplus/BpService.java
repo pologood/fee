@@ -204,6 +204,7 @@ public class BpService implements FeeService {
         String bpDenominationprice = String.valueOf(product.getDenominationprice());
         String bpPayappcode = convToBpChannelNew(order.getPayChanel());
         String bpReturnUrl = "https://pay.sogou.com";
+//        String bpCallbackUrl="https://pay.sogou.com";
 
         BpReqDataBody bpReqDataBody = new BpReqDataBody("N1007", "payment");
         bpReqDataBody.put("requesttype", bpRequstType);
@@ -220,6 +221,7 @@ public class BpService implements FeeService {
         bpReqDataBody.put("proddenominationprice", bpDenominationprice);
         bpReqDataBody.put("payappcode", bpPayappcode);
         bpReqDataBody.put("returnurl", bpReturnUrl);
+//        bpReqDataBody.put("callbackurl",bpCallbackUrl);
 
         return bpReqDataBody;
     }
@@ -336,9 +338,9 @@ public class BpService implements FeeService {
             case PC:
                 return "0";
             case WAP:
-                return "1";
-            case APP:
                 return "2";
+            case APP:
+                return "1";
             case OTHERS:
                 return "3";
             default:
