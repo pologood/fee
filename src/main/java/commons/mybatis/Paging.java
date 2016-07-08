@@ -39,7 +39,7 @@ public class Paging extends HashMap<String, Object> {
                            rowId, table, where, rowId, rowId, rowId, count);
       
     } else if (where != null && !backward) {
-      return String.format("SELECT %s FROM %s WHERE (%s) AND %s > #{%s} ORDER BY %s DESC LIMIT %d",
+      return String.format("SELECT %s FROM %s WHERE (%s) AND %s > #{%s} ORDER BY %s ASC LIMIT %d",
                            rowId, table, where, rowId, rowId, rowId, count);
     } else {
       throw new IllegalArgumentException();

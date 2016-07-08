@@ -19,6 +19,10 @@ public class BpProductInfo {
     private String prodid;
     private String prodname;
     private long proddenominationprice;
+    private String ownoperator;
+    private String ownoperatorname;
+    private String ownprovince;
+    private String ownprovincename;
 
     public static Product.Status convFromBpStatus(String bpStatus) {
         if (bpStatus.equals(BP_PRO_STATUS_ONSALE)) {
@@ -98,5 +102,37 @@ public class BpProductInfo {
 
     public void setProddenominationprice(long proddenominationprice) {
         this.proddenominationprice = proddenominationprice;
+    }
+
+    public String getOwnoperator() {
+        return ownoperator;
+    }
+
+    public void setOwnoperator(String ownoperator) {
+        this.ownoperator = ownoperator;
+    }
+
+    public String getOwnoperatorname() {
+        return ownoperatorname;
+    }
+
+    public void setOwnoperatorname(String ownoperatorname) {
+        this.ownoperatorname = ownoperatorname;
+    }
+
+    public String getOwnprovince() {
+        return ownprovince;
+    }
+
+    public void setOwnprovince(String ownprovince) {
+        this.ownprovince = ownprovince;
+    }
+
+    public String getOwnprovincename() {
+        return ownprovincename;
+    }
+
+    public void setOwnprovincename(String ownprovincename) {
+        this.ownprovincename = ownprovincename;
     }
 }
