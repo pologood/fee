@@ -125,6 +125,7 @@ public class BpService implements FeeService {
         order.setStatus(Order.Status.TOPAY);
         orderMapper.add(order);
 
+
         PayReturnInfo.PayReturnType returnType = convFromBpRetTypeNew(bpPayReturnType);
         PayReturnInfo payReturnInfo = new PayReturnInfo(order, bpPayReturnInfo, returnType);
         return payReturnInfo;
@@ -203,8 +204,7 @@ public class BpService implements FeeService {
         String bpProvince = BpProvince.getProCodeByBpName(ProvinceUtil.getProvinceByCode(province));
         String bpDenominationprice = String.valueOf(product.getDenominationprice());
         String bpPayappcode = convToBpChannelNew(order.getPayChanel());
-        String bpReturnUrl = "https://pay.sogou.com";
-//        String bpCallbackUrl="https://pay.sogou.com";
+        String bpReturnUrl = FeeService.PAY_CALLBACK_URL;
 
         BpReqDataBody bpReqDataBody = new BpReqDataBody("N1007", "payment");
         bpReqDataBody.put("requesttype", bpRequstType);
@@ -221,7 +221,6 @@ public class BpService implements FeeService {
         bpReqDataBody.put("proddenominationprice", bpDenominationprice);
         bpReqDataBody.put("payappcode", bpPayappcode);
         bpReqDataBody.put("returnurl", bpReturnUrl);
-//        bpReqDataBody.put("callbackurl",bpCallbackUrl);
 
         return bpReqDataBody;
     }
