@@ -125,6 +125,7 @@ public class BpService implements FeeService {
         order.setStatus(Order.Status.TOPAY);
         orderMapper.add(order);
 
+
         PayReturnInfo.PayReturnType returnType = convFromBpRetTypeNew(bpPayReturnType);
         PayReturnInfo payReturnInfo = new PayReturnInfo(order, bpPayReturnInfo, returnType);
         return payReturnInfo;
@@ -203,7 +204,7 @@ public class BpService implements FeeService {
         String bpProvince = BpProvince.getProCodeByBpName(ProvinceUtil.getProvinceByCode(province));
         String bpDenominationprice = String.valueOf(product.getDenominationprice());
         String bpPayappcode = convToBpChannelNew(order.getPayChanel());
-        String bpReturnUrl = "https://pay.sogou.com";
+        String bpReturnUrl = FeeService.PAY_CALLBACK_URL;
 
         BpReqDataBody bpReqDataBody = new BpReqDataBody("N1007", "payment");
         bpReqDataBody.put("requesttype", bpRequstType);
@@ -336,9 +337,9 @@ public class BpService implements FeeService {
             case PC:
                 return "0";
             case WAP:
-                return "1";
-            case APP:
                 return "2";
+            case APP:
+                return "1";
             case OTHERS:
                 return "3";
             default:
@@ -356,6 +357,34 @@ public class BpService implements FeeService {
                 return PayReturnInfo.PayReturnType.HTML;
             default:
                 return PayReturnInfo.PayReturnType.UNKNOWN;
+        }
+
+    }
+
+    public static PhoneInfo.WarnCode convFromBpWarnCode(String bpWarnCode) {
+        switch (bpWarnCode) {
+            case "0":
+                return PhoneInfo.WarnCode.NORMAL;
+            case "1":
+                return PhoneInfo.WarnCode.BLACKLIST;
+            case "3":
+                return PhoneInfo.WarnCode.PROVINCE_OPERRATING;
+            default:
+                return null;
+        }
+    }
+
+    public static PhoneInfo.OpType convFromBpOpType(String bpOpType) {
+        boolean phoneOp = (bpOpType.substring(0, 1)) == "1";
+        boolean flowOp = (bpOpType.substring(1, 2)) == "1";
+        if (phoneOp && flowOp) {
+            return PhoneInfo.OpType.ALL;
+        } else if (phoneOp) {
+            return PhoneInfo.OpType.PHONE_OP;
+        } else if (flowOp) {
+            return PhoneInfo.OpType.FLOW_OP;
+        } else {
+            return PhoneInfo.OpType.NONE;
         }
 
     }

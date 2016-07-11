@@ -16,7 +16,6 @@ import java.util.Collections;
 import java.util.List;
 
 public final class BpAesUtil {
-
     public final static String DEFAULT_CHARSET = "UTF-8";
 
     /**

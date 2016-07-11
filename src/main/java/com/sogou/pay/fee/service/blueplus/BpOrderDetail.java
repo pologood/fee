@@ -24,6 +24,7 @@ public class BpOrderDetail {
     private String orderrcode;
     private String payappcode;
     private String outorderid;
+    private String acctcode;
 
     public String getOrderid() {
         return orderid;
@@ -183,5 +184,13 @@ public class BpOrderDetail {
 
     public void setOutorderid(String outorderid) {
         this.outorderid = outorderid;
+    }
+
+    public String getAcctcode() {
+        return acctcode;
+    }
+
+    public void setAcctcode(String acctcode) {
+        this.acctcode = acctcode;
     }
 }

@@ -13,6 +13,8 @@ public class BpPhoneInfo {
     private String ownprovincename;
     private String warncode;
     private String phoneno;
+    private String warndesc;
+    private String operationtype;
 
     public String getOwnprovince() {
         return ownprovince;
@@ -60,5 +62,21 @@ public class BpPhoneInfo {
 
     public void setPhoneno(String phoneno) {
         this.phoneno = phoneno;
+    }
+
+    public String getWarndesc() {
+        return warndesc;
+    }
+
+    public void setWarndesc(String warndesc) {
+        this.warndesc = warndesc;
+    }
+
+    public String getOperationtype() {
+        return operationtype;
+    }
+
+    public void setOperationtype(String operationtype) {
+        this.operationtype = operationtype;
     }
 }

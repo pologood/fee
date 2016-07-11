@@ -31,28 +31,61 @@ public class PhoneInfo {
         }
     }
 
+    public static enum WarnCode{
+        NORMAL(1),BLACKLIST(2),PROVINCE_OPERRATING(3);
+        private int value;
+        WarnCode(int value){
+            this.value=value;
+        }
+
+        public int getValue() {
+            return value;
+        }
+    }
+
+    public static enum OpType{
+        PHONE_OP(1),FLOW_OP(2),ALL(3),NONE(4);
+        private int value;
+        OpType(int value){
+            this.value=value;
+        }
+
+        public int getValue() {
+            return value;
+        }
+    }
+
 
     private String phone;
     private Operator operator;
     private String operatorName;
     private String provinceId;
     private String provinceName;
-
-    public PhoneInfo(String phone, Operator operator, String provinceId) {
-        this.phone = phone;
-        this.operator = operator;
-        this.operatorName = operator.getName();
-        this.provinceId = provinceId;
-        this.provinceName = ProvinceUtil.getProvinceByCode(provinceId);
-    }
+    private WarnCode warnCode;
+    private String warnMsg;
+    private OpType opType;
+    private String opMsg;
 
     public PhoneInfo(BpPhoneInfo bpPhoneInfo) {
         this.phone = bpPhoneInfo.getPhoneno();
-        Operator operator = BpService.convFromBpOperatorNew(bpPhoneInfo.getOwnoperator());
-        this.operator = operator;
-        this.operatorName = operator.getName();
-        this.provinceId = ProvinceUtil.getProvinceByName(bpPhoneInfo.getOwnprovincename());
-        this.provinceName = bpPhoneInfo.getOwnprovincename();
+        this.warnCode=BpService.convFromBpWarnCode(bpPhoneInfo.getWarncode());
+        switch (this.warnCode){
+            case BLACKLIST:
+                this.warnMsg="blacklist";
+                break;
+            case PROVINCE_OPERRATING:
+                this.warnMsg="operating";
+                this.opType=BpService.convFromBpOpType(bpPhoneInfo.getOperationtype());
+            case NORMAL:
+                Operator operator = BpService.convFromBpOperatorNew(bpPhoneInfo.getOwnoperator());
+                this.operator = operator;
+                this.operatorName = operator.getName();
+                this.provinceId = ProvinceUtil.getProvinceByName(bpPhoneInfo.getOwnprovincename());
+                this.provinceName = bpPhoneInfo.getOwnprovincename();
+                break;
+            default:
+                break;
+        }
 
     }
 
@@ -95,5 +128,37 @@ public class PhoneInfo {
 
     public void setProvinceName(String provinceName) {
         this.provinceName = provinceName;
+    }
+
+    public WarnCode getWarnCode() {
+        return warnCode;
+    }
+
+    public void setWarnCode(WarnCode warnCode) {
+        this.warnCode = warnCode;
+    }
+
+    public String getWarnMsg() {
+        return warnMsg;
+    }
+
+    public void setWarnMsg(String warnMsg) {
+        this.warnMsg = warnMsg;
+    }
+
+    public OpType getOpType() {
+        return opType;
+    }
+
+    public void setOpType(OpType opType) {
+        this.opType = opType;
+    }
+
+    public String getOpMsg() {
+        return opMsg;
+    }
+
+    public void setOpMsg(String opMsg) {
+        this.opMsg = opMsg;
     }
 }
