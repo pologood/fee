@@ -1,6 +1,7 @@
 package commons.mybatis;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -20,27 +21,27 @@ public class Paging extends HashMap<String, Object> {
   public String sql() {
     if (where == null && first) {
       return String.format("SELECT %s FROM %s ORDER BY %s DESC LIMIT %d",
-                           rowId, table, rowId, count);
-      
+              rowId, table, rowId, count);
+
     } else if (where == null && backward) {
       return String.format("SELECT %s FROM %s WHERE %s < #{%s} ORDER BY %s DESC LIMIT %d",
-                           rowId, table, rowId, rowId, rowId, count);
-      
+              rowId, table, rowId, rowId, rowId, count);
+
     } else if (where == null && !backward) {
-      return String.format("SELECT %s FROM %s WHERE %s > #{%s} ORDER BY %s DESC LIMIT %d",
-                           rowId, table, rowId, rowId, rowId, count);
-      
+      return String.format("SELECT %s FROM %s WHERE %s > #{%s} ORDER BY %s ASC LIMIT %d",
+              rowId, table, rowId, rowId, rowId, count);
+
     } else if (where != null && first) {
       return String.format("SELECT %s FROM %s WHERE %s ORDER BY %s DESC LIMIT %d",
-                           rowId, table, where, rowId, count);
-      
+              rowId, table, where, rowId, count);
+
     } else if (where != null && backward) {
       return String.format("SELECT %s FROM %s WHERE (%s) AND %s < #{%s} ORDER BY %s DESC LIMIT %d",
-                           rowId, table, where, rowId, rowId, rowId, count);
-      
+              rowId, table, where, rowId, rowId, rowId, count);
+
     } else if (where != null && !backward) {
       return String.format("SELECT %s FROM %s WHERE (%s) AND %s > #{%s} ORDER BY %s ASC LIMIT %d",
-                           rowId, table, where, rowId, rowId, rowId, count);
+              rowId, table, where, rowId, rowId, rowId, count);
     } else {
       throw new IllegalArgumentException();
     }
@@ -101,7 +102,7 @@ public class Paging extends HashMap<String, Object> {
     paging.setFirst(true);
     return paging.sql();
   }
-  
+
   public static String forward(Paging paging) {
     paging.setFirst(false);
     paging.setBackward(false);
@@ -117,19 +118,19 @@ public class Paging extends HashMap<String, Object> {
   public String listSql() {
     if (where == null && containsKey(rowId)) {
       return String.format("SELECT %s FROM %s WHERE %s <= #{%s} ORDER BY %s DESC LIMIT %d",
-                           fields, table, rowId, rowId, rowId, count);
-      
+              fields, table, rowId, rowId, rowId, count);
+
     } else if (where == null && !containsKey(rowId)) {
       return String.format("SELECT %s FROM %s ORDER BY %s DESC limit %d",
-                           fields, table, rowId, count);
+              fields, table, rowId, count);
 
     } else if (where != null && containsKey(rowId)) {
       return String.format("SELECT %s FROM %s WHERE (%s) AND %s <= #{%s} ORDER BY %s DESC LIMIT %d",
-                           fields, table, where, rowId, rowId, rowId, count);
+              fields, table, where, rowId, rowId, rowId, count);
 
     } else if (where != null && !containsKey(rowId)) {
       return String.format("SELECT %s FROM %s WHERE %s ORDER BY %s DESC LIMIT %d",
-                           fields, table, where, rowId, count);
+              fields, table, where, rowId, count);
     } else {
       throw new IllegalArgumentException();
     }
@@ -142,16 +143,21 @@ public class Paging extends HashMap<String, Object> {
   public static class Page<T> {
     public T min;
     public T max;
-    
+
     public Page(T min, T max) {
       this.min = min;
       this.max = max;
     }
   }
 
-  public static <T> List<Page<T>> pages(List<T> list, int count) {
+  public static <T extends Comparable> List<Page<T>> pages(List<T> list, int count) {
     List<Page<T>> pageList = new ArrayList<>();
-    
+    if (list.size() >= 2) {
+      @SuppressWarnings("unchecked")
+      int r = list.get(0).compareTo(list.get(1));
+      if (r < 0) Collections.reverse(list);
+    }
+
     for (int i = 0; i < list.size(); i += count) {
       T max = list.get(i);
       T min;
@@ -162,7 +168,7 @@ public class Paging extends HashMap<String, Object> {
       }
       pageList.add(new Page<T>(min, max));
     }
-    
+
     return pageList;
   }
 }
