@@ -1,18 +1,18 @@
 package commons.spring;
 
-import java.io.*;
-import java.util.*;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import commons.utils.StringHelper;
+import org.springframework.security.authentication.RememberMeAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.authentication.RememberMeAuthenticationToken;
 import org.springframework.security.web.authentication.RememberMeServices;
-import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.Jedis;
-import commons.utils.StringHelper;
+import redis.clients.jedis.JedisPool;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.*;
 
 public class RedisRememberMeService implements RememberMeServices {
   public static class User {
@@ -231,6 +231,10 @@ public class RedisRememberMeService implements RememberMeServices {
     return cookie;
   }    
 
+  private String cacheKey(long uid) {
+    return KEY_PREFIX + String.valueOf(uid);
+  }
+
   private String cacheKey(String uid) {
     return KEY_PREFIX + uid;
   }
@@ -275,7 +279,7 @@ public class RedisRememberMeService implements RememberMeServices {
     CacheEntity cacheEntity;
     
     try (Jedis c = jedisPool.getResource()) {
-      String key = cacheKey(user.getId());
+      String key = cacheKey(user.getUid());
       cacheEntity = CacheEntity.buildFromString(c.get(key));
       if (cacheEntity == null) return false;
       

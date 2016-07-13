@@ -3,6 +3,7 @@ package com.sogou.pay.fee.config;
 import com.sogou.pay.fee.service.blueplus.BpService;
 import commons.saas.RestNameService;
 import commons.spring.LoggerFilter;
+import commons.spring.XssFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -23,7 +24,7 @@ import java.util.Arrays;
 
 @Configuration
 @EnableScheduling
-@ComponentScan({ProjectInfo.PKG_PREFIX + ".api", ProjectInfo.PKG_PREFIX + ".manager"})
+@ComponentScan({ProjectInfo.PKG_PREFIX + ".api", ProjectInfo.PKG_PREFIX + ".manager",ProjectInfo.PKG_PREFIX + ".service"})
 @PropertySource(value = "classpath:application-default.properties", ignoreResourceNotFound = true)
 @PropertySource("classpath:application-${spring.profiles.active}.properties")
 public class RootConfig {

@@ -1,16 +1,17 @@
 package commons.utils;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.awt.Color;
-import javax.imageio.ImageIO;
-import org.patchca.color.SingleColorFactory;
 import org.patchca.background.SingleColorBackgroundFactory;
+import org.patchca.color.SingleColorFactory;
 import org.patchca.filter.predefined.DefaultRippleFilterFactory;
 import org.patchca.font.RandomFontFactory;
 import org.patchca.service.Captcha;
 import org.patchca.service.ConfigurableCaptchaService;
 import org.patchca.word.DefaultRandomWordFactory;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.io.IOException;
+import java.io.OutputStream;
 
 public class PatchcaHelper {
   private static ConfigurableCaptchaService captchaService = new ConfigurableCaptchaService();

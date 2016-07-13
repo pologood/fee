@@ -1,11 +1,13 @@
 package commons.mybatis;
 
+import org.apache.ibatis.type.BaseTypeHandler;
+import org.apache.ibatis.type.JdbcType;
+
 import java.lang.reflect.Method;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import org.apache.ibatis.type.*;
 
 public class EnumValueTypeHandler<E extends Enum<E>> extends BaseTypeHandler<E> {
 

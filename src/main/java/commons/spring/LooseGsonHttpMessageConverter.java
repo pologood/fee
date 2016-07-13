@@ -1,9 +1,10 @@
 package commons.spring;
 
-import java.util.Arrays;
-import java.util.List;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class LooseGsonHttpMessageConverter extends MappingJackson2HttpMessageConverter {
   public LooseGsonHttpMessageConverter() {

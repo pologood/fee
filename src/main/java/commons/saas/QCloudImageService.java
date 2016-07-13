@@ -1,9 +1,10 @@
 package commons.saas;
 
-import java.io.InputStream;
-import java.io.ByteArrayInputStream;
 import com.qcloud.PicCloud;
 import com.qcloud.UploadResult;
+
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 
 public class QCloudImageService extends ImageService {
   private String bucket;

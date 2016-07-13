@@ -1,10 +1,11 @@
 package commons.utils;
 
-import java.nio.charset.Charset;
-import java.security.MessageDigest;
+import org.apache.commons.codec.binary.Hex;
+
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-import org.apache.commons.codec.binary.Hex;
+import java.nio.charset.Charset;
+import java.security.MessageDigest;
 
 public class DigestHelper {
   private static final Charset charset = Charset.forName("UTF-8");

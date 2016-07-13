@@ -1,9 +1,10 @@
 package commons.utils;
 
-import java.util.Map;
-import java.util.HashMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MapHelper {
   public static Map<String, Object> make(Object ... varArgs) {

@@ -1,12 +1,11 @@
 package commons.mybatis;
 
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.CallableStatement;
+import org.apache.ibatis.type.JdbcType;
+import org.apache.ibatis.type.MappedTypes;
+import org.apache.ibatis.type.TypeHandler;
+
+import java.sql.*;
 import java.time.LocalDateTime;
-import org.apache.ibatis.type.*;
 
 @MappedTypes(LocalDateTime.class)
 public class LocalDateTimeTypeHandler implements TypeHandler<LocalDateTime> {

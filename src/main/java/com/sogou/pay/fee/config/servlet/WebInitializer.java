@@ -3,6 +3,8 @@ package com.sogou.pay.fee.config.servlet;
 import javax.servlet.Filter;
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletRegistration.Dynamic;
+
+import org.springframework.security.access.SecurityConfig;
 import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 import com.sogou.pay.fee.config.*;
@@ -17,7 +19,7 @@ public class WebInitializer extends AbstractAnnotationConfigDispatcherServletIni
   
   @Override
   protected Class<?>[] getServletConfigClasses() {
-    return new Class<?>[] { WebConfig.class, JsonDocConfig.class, AutoCodeConfig.class };
+    return new Class<?>[] { WebConfig.class, JsonDocConfig.class, SecurityConfig.class,};
   }
 
   @Override

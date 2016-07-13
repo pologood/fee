@@ -1,18 +1,14 @@
 package commons.saas;
 
-import java.util.Arrays;
-import java.nio.charset.Charset;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import commons.spring.LooseGsonHttpMessageConverter;
+import commons.utils.DigestHelper;
+import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 import redis.clients.jedis.JedisPool;
-import commons.utils.DigestHelper;
-import commons.spring.LooseGsonHttpMessageConverter;
+
+import java.nio.charset.Charset;
+import java.util.Arrays;
 
 class Phone {
   public String nationcode;
@@ -26,7 +22,7 @@ class Phone {
 }
 
 class SendSmsReqBody {
-  public Phone   tel;
+  public Phone tel;
   public String  msg;
   public String  sig;
 }

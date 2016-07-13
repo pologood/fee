@@ -1,7 +1,7 @@
 package commons.saas;
 
-import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 public abstract class SmsService {
   public static final String CODE_PREFIX = "SmsService_";
