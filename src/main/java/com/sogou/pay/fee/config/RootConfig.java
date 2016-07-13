@@ -49,6 +49,11 @@ public class RootConfig {
     }
 
     @Bean
+    public XssFilter xssFilter() {
+        return new XssFilter(env);
+    }
+
+    @Bean
     public JedisPool jedisPool() {
         return new JedisPool(
                 env.getRequiredProperty("redis.url"),
