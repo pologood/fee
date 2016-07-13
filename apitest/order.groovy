@@ -6,10 +6,7 @@ CONFIG(
   headers: [host: "fee.pay.sogou.com"]
 )
 
-
-
-def phoneInfo
-GET("/api/phoneinfo/phones=$phoneUnicom")
+GET("/api/phoneinfo?phones=$phoneUnicom")
 EXPECT {
   json.code = 0
   json.'data' = NotEmpty
