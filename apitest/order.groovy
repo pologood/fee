@@ -173,4 +173,18 @@ EXPECT {
     json.code = 400
 }
 
+POST("/api/order") {
+    r.body = [feeType    : "PHONE",
+              productId  : phoneProductId,
+              phone      : "15811330571",
+              quantity   : 1,
+              payChannel : "ZHIFUBAO",
+              payTerminal: "WAP",
+              province   : "110000",
+              operator   : "CHINA_UNICOM"
+    ]
+}
+EXPECT {
+    json.code = 400
+}
 STAT()
