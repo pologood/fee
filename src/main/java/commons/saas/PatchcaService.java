@@ -1,20 +1,19 @@
 package commons.saas;
 
-import commons.utils.PatchcaHelper;
+import java.io.IOException;
+import java.io.ByteArrayOutputStream;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import commons.utils.PatchcaHelper;
 
 public class PatchcaService {
   private final static String PATCHCA_PREFIX = "PatchcaService_";
   private JedisPool jedisPool;
-  
+
   public PatchcaService(JedisPool jedisPool) {
     this.jedisPool = jedisPool;
   }
-  
+
   public byte[] getPatchca(String id) {
     try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
       String text = PatchcaHelper.get(os);

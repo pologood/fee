@@ -1,16 +1,15 @@
 package commons.saas;
 
-import org.springframework.core.env.Environment;
-
-import java.util.HashMap;
 import java.util.Map;
+import java.util.HashMap;
+import org.springframework.core.env.Environment;
 
 public class RestNameService {
   Map<String, String> map = new HashMap<>();
-  
+
   public RestNameService(Environment env) {
     String token = env.getRequiredProperty("rest.token");
-    
+
     for (int i = 1; i < 101; ++i) {
       String value = env.getProperty("rest.nameservice." + String.valueOf(i));
       if (value == null) continue;

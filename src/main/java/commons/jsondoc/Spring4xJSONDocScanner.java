@@ -1,19 +1,18 @@
 package commons.jsondoc;
 
-import com.google.common.collect.Sets;
-import org.jsondoc.core.annotation.ApiBodyObject;
-import org.jsondoc.core.annotation.ApiObject;
-import org.jsondoc.core.pojo.ApiMethodDoc;
-import org.jsondoc.core.pojo.JSONDocTemplate;
-import org.jsondoc.core.util.JSONDocUtils;
-import org.jsondoc.springmvc.scanner.AbstractSpringJSONDocScanner;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.lang.reflect.Method;
+import com.google.common.collect.Sets;
+import org.jsondoc.core.pojo.ApiMethodDoc;
+import org.jsondoc.core.pojo.JSONDocTemplate;
+import org.jsondoc.core.util.JSONDocUtils;
+import org.jsondoc.core.annotation.ApiBodyObject;
+import org.jsondoc.core.annotation.ApiObject;
+import org.jsondoc.springmvc.scanner.AbstractSpringJSONDocScanner;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RestController;
 
 public class Spring4xJSONDocScanner extends AbstractSpringJSONDocScanner {
   @Override

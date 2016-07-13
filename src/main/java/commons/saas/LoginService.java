@@ -1,10 +1,9 @@
 package commons.saas;
 
-import commons.utils.JsonHelper;
+import java.util.Map;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
-
-import java.util.Map;
+import commons.utils.JsonHelper;
 
 public abstract class LoginService {
   public static class User {

@@ -1,12 +1,11 @@
 package commons.jsondoc;
 
-import org.jsondoc.core.annotation.ApiBodyObject;
+import java.lang.reflect.Method;
 import org.jsondoc.core.pojo.ApiBodyObjectDoc;
 import org.jsondoc.core.util.JSONDocType;
 import org.jsondoc.core.util.JSONDocTypeBuilder;
 import org.jsondoc.core.util.JSONDocUtils;
-
-import java.lang.reflect.Method;
+import org.jsondoc.core.annotation.ApiBodyObject;
 
 public class SpringRequestBodyBuilder {
 

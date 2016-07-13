@@ -1,14 +1,14 @@
 package commons.jsondoc;
 
+import java.lang.reflect.Method;
+import java.util.List;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
 
 public class SpringConsumesBuilder {
 

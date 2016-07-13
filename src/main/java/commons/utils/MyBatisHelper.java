@@ -1,9 +1,8 @@
 package commons.utils;
 
+import java.util.List;
 import org.apache.ibatis.type.TypeHandler;
 import org.apache.ibatis.type.TypeHandlerRegistry;
-
-import java.util.List;
 
 public class MyBatisHelper {
 
