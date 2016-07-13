@@ -185,6 +185,6 @@ POST("/api/order") {
     ]
 }
 EXPECT {
-    json.code = 400
+    json.code = 500
 }
 STAT()

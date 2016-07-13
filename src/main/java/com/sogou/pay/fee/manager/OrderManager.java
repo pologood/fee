@@ -8,6 +8,7 @@ import com.sogou.pay.fee.model.ApiResult;
 import com.sogou.pay.fee.model.Errno;
 import com.sogou.pay.fee.model.PayReturnInfo;
 import com.sogou.pay.fee.model.PhoneInfo;
+import com.sogou.pay.fee.service.blueplus.BpException;
 import com.sogou.pay.fee.service.blueplus.BpService;
 import commons.mybatis.Paging;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,8 +74,12 @@ public class OrderManager {
         order.setTotalAmount(totalAmount);
         order.setCurPrice(curPrice);
 
-        PayReturnInfo payReturnInfo = bpService.createOrder(order, product, province, operator);
-        return new ApiResult<PayReturnInfo>(payReturnInfo);
+        try {
+            PayReturnInfo payReturnInfo = bpService.createOrder(order, product, province, operator);
+            return new ApiResult<PayReturnInfo>(payReturnInfo);
+        }catch (BpException bpException){
+            return ApiResult.internalError(bpException.getMessage());
+        }
     }
 
     public ApiResult queryOrderDetail(long orderId) {
