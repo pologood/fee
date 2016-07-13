@@ -32,6 +32,8 @@ public class OrderManager {
 
     private String tokenKey;
 
+    public static final String PHONE_FORMAT = "^(13[0-9]|14[0-9]|15[0-9]|18[0-9]|17[0-9])\\d{8}$";
+
 
     @Autowired
     public OrderManager(Environment env) {
@@ -40,6 +42,9 @@ public class OrderManager {
     }
 
     public ApiResult queryPhoneInfo(List<String> phones) {
+        if(!isPhoneNumber(phones)){
+            return ApiResult.badRequest("wrong phone number");
+        }
         List<PhoneInfo> phoneInfos = bpService.queryPhoneInfos(phones);
         return new ApiResult<List>(phoneInfos);
     }
@@ -176,6 +181,17 @@ public class OrderManager {
             needRefresh = true;
         }
         return needRefresh;
+    }
+
+    public boolean isPhoneNumber(List<String> phones){
+        boolean isPhone=true;
+        for(String phone:phones){
+            if(!phone.matches(PHONE_FORMAT)){
+                isPhone=false;
+                break;
+            }
+        }
+        return isPhone;
     }
 
 
