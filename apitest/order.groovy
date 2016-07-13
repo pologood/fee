@@ -6,7 +6,9 @@ CONFIG(
   headers: [host: "test.fee.pay.sogou.com"]
 )
 
-GET("/api/phoneinfo?phones=$phoneUnicom")
+GET("/api/phoneinfo?"){
+  r.query = [phones: $phoneUnicom]
+}
 EXPECT {
   json.code = 0
   json.'data' = NotEmpty
