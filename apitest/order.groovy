@@ -148,20 +148,6 @@ EXPECT {
 
 POST("/api/order") {
     r.body = [feeType    : "PHONE",
-              phone      : "15811330571",
-              productId  : phoneProductId,
-              quantity   : 1,
-              payChannel : "ZHIFUBAO",
-              payTerminal: "WAP",
-              province   : "110000",
-              operator   : "CHINA_MOBILE"
-    ]
-}
-EXPECT {
-    json.code = 400
-}
-POST("/api/order") {
-    r.body = [feeType    : "PHONE",
               productId  : phoneProductId,
               quantity   : 1,
               payChannel : "ZHIFUBAO",

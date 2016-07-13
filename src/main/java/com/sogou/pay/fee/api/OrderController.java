@@ -67,7 +67,7 @@ public class OrderController {
             @ApiQueryParam(name = "userId", description = "userId")
             @RequestParam Optional<String> userId,
             @ApiQueryParam(name = "phone", description = "phone")
-            @RequestParam Optional<String> phone,
+            @RequestParam String phone,
             @ApiQueryParam(name = "specifiedNo", description = "specifiedNo")
             @RequestParam Optional<String> specifiedNo,
             @ApiQueryParam(name = "feetype", description = "feetype")
@@ -88,12 +88,10 @@ public class OrderController {
         if (userId.isPresent()) {
             order.setUserId(userId.get());
         }
-        if (phone.isPresent()) {
-            order.setPhone(phone.get());
-        }
         if (specifiedNo.isPresent()) {
             order.setSpecifiedNo(specifiedNo.get());
         }
+        order.setPhone(phone);
         order.setFeeType(feeType);
         order.setProductId(productId);
         order.setQuantity(quantity.orElse(1));
