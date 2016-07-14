@@ -84,6 +84,10 @@ public class OrderController {
             @RequestParam String province,
             @ApiQueryParam(name = "operator", description = "operator code")
             @RequestParam PhoneInfo.Operator operator) {
+        if (quantity.isPresent() && quantity.get() != 1) {
+            return ApiResult.badRequest("quantity can be null or 1");
+        }
+
         Order order = new Order();
         if (userId.isPresent()) {
             order.setUserId(userId.get());
@@ -91,6 +95,8 @@ public class OrderController {
         if (specifiedNo.isPresent()) {
             order.setSpecifiedNo(specifiedNo.get());
         }
+
+
         order.setPhone(phone);
         order.setFeeType(feeType);
         order.setProductId(productId);
