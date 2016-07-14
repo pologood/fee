@@ -182,7 +182,7 @@ public class OrderController {
             @ApiQueryParam(name = "phone", description = "phone")
             @RequestParam Optional<String> phone,
             @ApiQueryParam(name = "orderId", description = "orderId")
-            @RequestParam long orderId
+            @RequestParam Optional<Long> orderId
     ) {
         return orderManager.list(queryType.orElse(Order.QueryOrderType.BY_PHONE), userId, phone, orderId, count);
     }

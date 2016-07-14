@@ -153,9 +153,13 @@ public class OrderManager {
     }
 
 
-    public ApiResult list(Order.QueryOrderType queryOrderType, Optional<String> userId, Optional<String> phone, long orderId, int count) {
+    public ApiResult list(Order.QueryOrderType queryOrderType, Optional<String> userId, Optional<String> phone,
+                          Optional<Long> orderId, int count) {
         Paging paging = new Paging().setTable(OrderMapper.Sql.TABLE)
                 .setRowId("orderId").setCount(1, count);
+        if(orderId.isPresent()){
+            paging.setParams("orderId",orderId.get());
+        }
 
         if (queryOrderType == Order.QueryOrderType.BY_PHONE) {
             if (!phone.isPresent()) {
