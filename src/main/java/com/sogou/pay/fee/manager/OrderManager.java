@@ -175,7 +175,6 @@ public class OrderManager {
 
 
         List<Order> orders;
-        paging.setParams("orderId", orderId);
         orders = orderMapper.find(paging);
         for (Order order : orders) {
             refreshOrder(order);
