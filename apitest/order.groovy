@@ -246,5 +246,44 @@ EXPECT {
     json.code = 400
 }
 
+def orderCountOld
+SQL("select count(*) as num from orders") { row ->
+    orderCountOld = row.num
+}
+
+
+POST("/api/order") {
+    r.body = [feeType    : "PHONE",
+              productId  : phoneProductId,
+              phone      : "15811330571",
+              quantity   : 1,
+              payChannel : "ZHIFUBAO",
+              payTerminal: "WAP",
+              province   : "110000",
+              operator   : "CHINA_MOBILE"
+    ]
+}
+def flowOrderId
+EXPECT {
+    json.code = 0
+    json.closure = { json ->
+        flowOrderId = json.'data.order.orderId'
+        status = json.'data.order.status'
+        assert status.equals("TOPAY")
+        payInfo = json.'data.paymentInfo'
+        payReturnType = json.'data.payReturnType'
+        println "payinfo:$payInfo"
+        println "payReturnType:$payReturnType"
+    }
+}
+
+def orderCount
+SQL("select count(*) as num from orders") { row ->
+    orderCount = row.num
+    assert orderCount == (orderCountOld + 1)
+}
+println "orderCount:$orderCountOld"
+println "orderCount:$orderCount"
+
 
 STAT()
