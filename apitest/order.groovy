@@ -345,8 +345,8 @@ EXPECT {
 }
 
 
-for(i=0;i<3;i++){
-    feeType="PHONE"
+for (i = 0; i < 3; i++) {
+    feeType = "PHONE"
     POST("/api/order") {
         r.body = [feeType    : feeType,
                   productId  : phoneProductId,
@@ -359,8 +359,8 @@ for(i=0;i<3;i++){
     }
 }
 
-for(j=0;j<3;j++){
-    feeType="FLOW"
+for (j = 0; j < 3; j++) {
+    feeType = "FLOW"
     POST("/api/order") {
         r.body = [feeType    : feeType,
                   productId  : flowProductId,
@@ -372,6 +372,103 @@ for(j=0;j<3;j++){
         ]
     }
 }
+
+GET("/api/orders/list") {
+    r.query = [queryType: "BY_PHONE", phone: "15811330571"]
+}
+
+def orderIdLastFir
+def orderIdLastSec
+def orderIdLastThr
+def statusLastFir
+def statusLastSec
+def statusLastThr
+
+EXPECT {
+    json.code = 0
+    json.closure = { json ->
+        orderIdLastFir = json.'data[0].orderId'
+        orderIdLastSec = json.'data[1].orderId'
+        orderIdLastThr = json.'data[2].orderId'
+        statusLastFir = json.'data[0].status'
+        statusLastSec = json.'data[1].status'
+        statusLastThr = json.'data[2].status'
+        println "$orderIdLastFir:$statusLastFir"
+        println "$orderIdLastSec:$statusLastSec"
+        println "$orderIdLastThr:$statusLastThr"
+    }
+}
+
+def border1_max
+def border1_min
+def border2_max
+def border2_min
+
+GET("/api/orders/pages") {
+    r.query = [queryType: "BY_PHONE", phone: "15811330571"]
+}
+EXPECT {
+    json.code = 0
+    json.closure = { json ->
+        border1_max = json.'data[0].max'
+        border1_min = json.'data[0].min'
+        border2_max = json.'data[1].max'
+        border2_min = json.'data[1].min'
+    }
+}
+def border3_max
+GET("/api/orders/pages/backward") {
+    r.query = [queryType: "BY_PHONE", phone: "15811330571", orderId: border2_min]
+}
+
+EXPECT {
+    json.code = 0
+    json.closure = { json ->
+        border3_max = json.'data[0].max'
+    }
+}
+
+GET("/api/orders/list") {
+    r.query = [queryType: "BY_PHONE", phone: "15811330571", orderId: border3_max]
+}
+def orderId3Fir
+def orderId3Sec
+def orderId3Thr
+def status3Fir
+def status3Sec
+def status3Thr
+EXPECT {
+    json.code = 0
+    json.closure = { json ->
+        orderId3Fir = json.'data[0].orderId'
+        orderId3Sec = json.'data[1].orderId'
+        orderId3Thr = json.'data[2].orderId'
+        status3Fir = json.'data[0].status'
+        status3Sec = json.'data[1].status'
+        status3Thr = json.'data[2].status'
+        println "$orderId3Fir:$status3Fir"
+        println "$orderId3Sec:$status3Sec"
+        println "$orderId3Thr:$status3Thr"
+    }
+}
+
+GET("/api/order/$orderId3Sec")
+EXPECT {
+    json.code = 0
+    json.'data' = NotEmpty
+    json.closure = { json ->
+        status = json.'data.status'
+        orderId = json.'data.orderId'
+        phone = json.'data.phone'
+        type = json.'data.feeType'
+        assert status.equals(status3Sec)
+        assert orderId.equals(orderId3Sec)
+        assert phone.equals("15811330571")
+        assert type.equals("FLOW")
+
+    }
+}
+
 
 
 STAT()
