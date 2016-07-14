@@ -263,11 +263,11 @@ POST("/api/order") {
               operator   : "CHINA_MOBILE"
     ]
 }
-def flowOrderId
+def phoneOrderId
 EXPECT {
     json.code = 0
     json.closure = { json ->
-        flowOrderId = json.'data.order.orderId'
+        phoneOrderId = json.'data.order.orderId'
         status = json.'data.order.status'
         assert status.equals("TOPAY")
         payInfo = json.'data.paymentInfo'
@@ -284,6 +284,94 @@ SQL("select count(*) as num from orders") { row ->
 }
 println "orderCount:$orderCountOld"
 println "orderCount:$orderCount"
+
+
+
+orderCountOld = orderCount
+
+POST("/api/order") {
+    r.body = [feeType    : "FLOW",
+              productId  : flowProductId,
+              phone      : "15811330571",
+              quantity   : 1,
+              payChannel : "ZHIFUBAO",
+              payTerminal: "WAP",
+              province   : "110000",
+              operator   : "CHINA_MOBILE"
+    ]
+}
+
+def flowOrderId
+EXPECT {
+    json.code = 0
+    json.closure = { json ->
+        flowOrderId = json.'data.order.orderId'
+        status = json.'data.order.status'
+        assert status.equals("TOPAY")
+        payInfo = json.'data.paymentInfo'
+        payReturnType = json.'data.payReturnType'
+        println "payinfo:$payInfo"
+        println "payReturnType:$payReturnType"
+    }
+}
+
+SQL("select count(*) as num from orders") { row ->
+    orderCount = row.num
+    assert orderCount == (orderCountOld + 1)
+}
+
+POST("/api/order") {
+    r.body = [feeType    : "FLOW",
+              productId  : flowProductId,
+              phone      : "15811330571",
+              payChannel : "ZHIFUBAO",
+              payTerminal: "WAP",
+              province   : "110000",
+              operator   : "CHINA_MOBILE"
+    ]
+}
+
+EXPECT {
+    json.code = 0
+    json.closure = { json ->
+        flowOrderId = json.'data.order.orderId'
+        status = json.'data.order.status'
+        assert status.equals("TOPAY")
+        payInfo = json.'data.paymentInfo'
+        payReturnType = json.'data.payReturnType'
+        println "payinfo:$payInfo"
+        println "payReturnType:$payReturnType"
+    }
+}
+
+
+for(i=0;i<3;i++){
+    feeType="PHONE"
+    POST("/api/order") {
+        r.body = [feeType    : feeType,
+                  productId  : phoneProductId,
+                  phone      : "15811330571",
+                  payChannel : "ZHIFUBAO",
+                  payTerminal: "WAP",
+                  province   : "110000",
+                  operator   : "CHINA_MOBILE"
+        ]
+    }
+}
+
+for(j=0;j<3;j++){
+    feeType="FLOW"
+    POST("/api/order") {
+        r.body = [feeType    : feeType,
+                  productId  : flowProductId,
+                  phone      : "15811330571",
+                  payChannel : "ZHIFUBAO",
+                  payTerminal: "WAP",
+                  province   : "110000",
+                  operator   : "CHINA_MOBILE"
+        ]
+    }
+}
 
 
 STAT()

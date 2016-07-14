@@ -25,6 +25,7 @@ public interface OrderMapper {
                     .VALUES("curPrice", "#{curPrice}")
                     .VALUES("quantity", "#{quantity}")
                     .VALUES("payChanel", "#{payChanel}")
+                    .VALUES("payTerminal", "#{payTerminal}")
                     .VALUES("status", "#{status}")
                     .VALUES("createTime", "#{createTime}");
 
