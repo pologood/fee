@@ -126,6 +126,9 @@ public class OrderController {
             @ApiQueryParam(name = "phone", description = "phone")
             @RequestParam Optional<String> phone
     ) {
+        if(queryType.isPresent()&& (queryType.get()==Order.QueryOrderType.BY_USERID)){
+            return ApiResult.notAccept("not support query by user now");
+        }
         return orderManager.countOrders(queryType.orElse(Order.QueryOrderType.BY_PHONE), userId, phone);
     }
 
@@ -139,6 +142,9 @@ public class OrderController {
             @ApiQueryParam(name = "phone", description = "phone")
             @RequestParam Optional<String> phone
     ) {
+        if(queryType.isPresent()&& (queryType.get()==Order.QueryOrderType.BY_USERID)){
+            return ApiResult.notAccept("not support query by user now");
+        }
         return orderManager.pages(queryType.orElse(Order.QueryOrderType.BY_PHONE), userId, phone, -1, pages, count, true);
     }
 
@@ -154,6 +160,9 @@ public class OrderController {
             @ApiQueryParam(name = "orderId", description = "orderId")
             @RequestParam long orderId
     ) {
+        if(queryType.isPresent()&& (queryType.get()==Order.QueryOrderType.BY_USERID)){
+            return ApiResult.notAccept("not support query by user now");
+        }
         return orderManager.pages(queryType.orElse(Order.QueryOrderType.BY_PHONE), userId, phone, orderId, pages, count, false);
     }
 
@@ -169,6 +178,9 @@ public class OrderController {
             @ApiQueryParam(name = "orderId", description = "orderId")
             @RequestParam long orderId
     ) {
+        if(queryType.isPresent()&& (queryType.get()==Order.QueryOrderType.BY_USERID)){
+            return ApiResult.notAccept("not support query by user now");
+        }
         return orderManager.pages(queryType.orElse(Order.QueryOrderType.BY_PHONE), userId, phone, orderId, pages, count, true);
     }
 
@@ -184,6 +196,9 @@ public class OrderController {
             @ApiQueryParam(name = "orderId", description = "orderId")
             @RequestParam Optional<Long> orderId
     ) {
+        if(queryType.isPresent()&& (queryType.get()==Order.QueryOrderType.BY_USERID)){
+            return ApiResult.notAccept("not support query by user now");
+        }
         return orderManager.list(queryType.orElse(Order.QueryOrderType.BY_PHONE), userId, phone, orderId, count);
     }
 

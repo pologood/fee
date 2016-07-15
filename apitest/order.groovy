@@ -425,6 +425,7 @@ EXPECT {
     json.code = 0
     json.closure = { json ->
         border3_max = json.'data[0].max'
+        border3_min = json.'data[0].min'
     }
 }
 
@@ -469,6 +470,85 @@ EXPECT {
     }
 }
 
+def new_border2_min
+def new_border2_max
 
+GET("/api/orders/pages/forward") {
+    r.query = [queryType: "BY_PHONE", phone: "15811330571", orderId: border3_max]
+}
+EXPECT {
+    json.code = 0
+    json.closure = { json ->
+        new_border2_min = json.'data[1].min'
+        new_border2_max = json.'data[1].max'
+    }
+}
+
+GET("/api/orders/list") {
+    r.query = [queryType: "BY_PHONE", phone: "15811330571", orderId: new_border2_max]
+}
+def orderId2Fir
+def orderId2Sec
+def orderId2Thr
+def status2Fir
+def status2Sec
+def status2Thr
+EXPECT {
+    json.code = 0
+    json.closure = { json ->
+        orderId2Fir = json.'data[0].orderId'
+        orderId2Sec = json.'data[1].orderId'
+        orderId2Thr = json.'data[2].orderId'
+        status2Fir = json.'data[0].status'
+        status2Sec = json.'data[1].status'
+        status2Thr = json.'data[2].status'
+        println "$orderId2Fir:$status2Fir"
+        println "$orderId2Sec:$status2Sec"
+        println "$orderId2Thr:$status2Thr"
+    }
+}
+
+GET("/api/orders/pages/forward") {
+    r.query = [queryType: "BY_PHONE", orderId: border3_max]
+}
+EXPECT {
+    json.code = 400
+}
+
+GET("/api/orders/list") {
+    r.query = [queryType: "BY_PHONE", orderId: new_border2_max]
+}
+EXPECT {
+    json.code = 400
+}
+
+GET("/api/orders/pages/forward") {
+    r.query = [phone: "15811330571", orderId: border3_max]
+}
+EXPECT{
+    json.code = 0
+}
+
+GET("/api/orders/pages/forward") {
+    r.query = [orderId: border3_max]
+}
+EXPECT{
+    json.code = 400
+}
+
+GET("/api/orders/pages/forward") {
+    r.query = [queryType: "BY_USERID", phone: "15811330571", orderId: border3_max]
+}
+EXPECT{
+    json.code = 406
+}
+
+GET("/api/orders/list") {
+    r.query = [queryType: "BY_PHONE", phone: "1111", orderId: new_border2_max]
+}
+EXPECT{
+    json.code = 0
+    json.'data.length()'=0
+}
 
 STAT()
