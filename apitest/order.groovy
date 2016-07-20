@@ -270,9 +270,9 @@ EXPECT {
         phoneOrderId = json.'data.order.orderId'
         status = json.'data.order.status'
         assert status.equals("TOPAY")
-        payInfo = json.'data.paymentInfo'
+//        payInfo = json.'data.paymentInfo'
         payReturnType = json.'data.payReturnType'
-        println "payinfo:$payInfo"
+//        println "payinfo:$payInfo"
         println "payReturnType:$payReturnType"
     }
 }
@@ -308,9 +308,9 @@ EXPECT {
         flowOrderId = json.'data.order.orderId'
         status = json.'data.order.status'
         assert status.equals("TOPAY")
-        payInfo = json.'data.paymentInfo'
+//        payInfo = json.'data.paymentInfo'
         payReturnType = json.'data.payReturnType'
-        println "payinfo:$payInfo"
+//        println "payinfo:$payInfo"
         println "payReturnType:$payReturnType"
     }
 }
@@ -337,9 +337,9 @@ EXPECT {
         flowOrderId = json.'data.order.orderId'
         status = json.'data.order.status'
         assert status.equals("TOPAY")
-        payInfo = json.'data.paymentInfo'
+//        payInfo = json.'data.paymentInfo'
         payReturnType = json.'data.payReturnType'
-        println "payinfo:$payInfo"
+//        println "payinfo:$payInfo"
         println "payReturnType:$payReturnType"
     }
 }
