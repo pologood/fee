@@ -17,15 +17,15 @@ import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
 class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
-  static final String s403 = "{`code`: 403, `message`: `Access Denied`}".replace('`', '"');
-  
+  static final String s401 = "{`code`: 401, `message`: `Unauthorized`}".replace('`', '"');
+
   @Override
   public void commence(
-    HttpServletRequest request, HttpServletResponse response,
-    AuthenticationException authException) throws IOException {
+          HttpServletRequest request, HttpServletResponse response,
+          AuthenticationException authException) throws IOException {
 
     response.setContentType("application/json");
-    response.getOutputStream().print(s403);
+    response.getOutputStream().print(s401);
   }
 }
 
@@ -45,7 +45,7 @@ public class SecurityConfigWithRedisRememberMeService extends WebSecurityConfigu
   boolean configUrlPermit(HttpSecurity http, boolean whiteList) throws Exception {
     String config = whiteList ? "url.permit." : "url.deny.";
     boolean hasConfig = false;
-    
+
     for (int i = 1; i < 101; ++i) {
       String request = env.getProperty(config + String.valueOf(i));
       if (request == null) continue;
@@ -100,14 +100,16 @@ public class SecurityConfigWithRedisRememberMeService extends WebSecurityConfigu
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http.csrf().disable()
-      .sessionManagement()
-      .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+            .sessionManagement()
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
     http.exceptionHandling()
-      .authenticationEntryPoint(new RestAuthenticationEntryPoint());
+            .authenticationEntryPoint(new RestAuthenticationEntryPoint());
 
-    if (!configUrlPermit(http, true) && !configUrlPermit(http, false)) {
-      configSitePermit(http);
+    if (!configUrlPermit(http, true)) {
+      if (!configUrlPermit(http, false)) {
+        configSitePermit(http);
+      }
     }
 
     http.rememberMe().rememberMeServices(rms);

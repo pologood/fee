@@ -36,6 +36,7 @@ public class DaoConfig {
     dataSource.setRemoveAbandoned(true);
     dataSource.setRemoveAbandonedTimeout(180);
     dataSource.setConnectionProperties("clientEncoding=UTF-8");
+    dataSource.setConnectionInitSqls(Arrays.asList("set names utf8mb4;"));
     return dataSource;
   }
 
@@ -60,6 +61,8 @@ public class DaoConfig {
     configuration.setDefaultStatementTimeout(300);
     MyBatisHelper.registerEnumHandler(
       configuration.getTypeHandlerRegistry(), EnumValueTypeHandler.class, ProjectInfo.PKG_PREFIX);
+    MyBatisHelper.registerEnumHandler(
+            configuration.getTypeHandlerRegistry(), EnumValueTypeHandler.class, "commons.saas");
 
     return sqlSessionFactory;
   }

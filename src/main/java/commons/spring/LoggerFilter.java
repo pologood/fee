@@ -13,7 +13,7 @@ import org.springframework.util.StreamUtils;
 @ManagedResource(objectName = "bean:name=loggerFilter")
 public class LoggerFilter implements Filter {
   private static final Logger logger = LoggerFactory.getLogger(LoggerFilter.class);
-  
+
   private boolean logHttpGet;
   private boolean logHttpPost;
   private boolean logHttpPut;
@@ -25,8 +25,8 @@ public class LoggerFilter implements Filter {
     if (env.acceptsProfiles("dev") || env.acceptsProfiles("test")) {
       def = "true";
     }
-      
-    logHttpGet    = Boolean.parseBoolean(env.getProperty("logfilter.get", def));
+
+    logHttpGet    = Boolean.parseBoolean(env.getProperty("logfilter.get", "false"));
     logHttpPost   = Boolean.parseBoolean(env.getProperty("logfilter.post", def));
     logHttpPut    = Boolean.parseBoolean(env.getProperty("logfilter.put", def));
     logHttpDelete = Boolean.parseBoolean(env.getProperty("logfilter.delete", def));
@@ -37,7 +37,7 @@ public class LoggerFilter implements Filter {
   public boolean getLogHttpGet() {
     return this.logHttpGet;
   }
-  
+
   @ManagedAttribute(description="The logHttpGet Attribute")
   public void setLogHttpGet(boolean logHttpGet) {
     this.logHttpGet = logHttpGet;
@@ -47,7 +47,7 @@ public class LoggerFilter implements Filter {
   public boolean getLogHttpPost() {
     return this.logHttpPost;
   }
-  
+
   @ManagedAttribute(description="The logHttpPost Attribute")
   public void setLogHttpPost(boolean logHttpPost) {
     this.logHttpPost = logHttpPost;
@@ -57,7 +57,7 @@ public class LoggerFilter implements Filter {
   public boolean setLogHttpPut() {
     return this.logHttpPut;
   }
-  
+
   @ManagedAttribute(description="The logHttpPut Attribute")
   public void setLogHttpPut(boolean logHttpPut) {
     this.logHttpPut = logHttpPut;
@@ -67,12 +67,12 @@ public class LoggerFilter implements Filter {
   public boolean getLogHttpDelete() {
     return this.logHttpDelete;
   }
-  
+
   @ManagedAttribute(description="The logHttpDelete Attribute")
   public void setLogHttpDelete(boolean logHttpDelete) {
     this.logHttpDelete = logHttpDelete;
   }
-  
+
   @ManagedAttribute(description="The logError Attribute", defaultValue="false")
   public boolean getLogError() {
     return this.logError;
@@ -82,26 +82,27 @@ public class LoggerFilter implements Filter {
   public void setLogError(boolean logError) {
     this.logError = logError;
   }
-  
+
   public void init(FilterConfig arg) throws ServletException {
     // nothing to do
   }
-  
+
   public void destroy() {
     // nothing to do
   }
 
   boolean ifLog(String method, HttpServletRequest req) {
     if (logHttpGet && method.equals("GET") ||
-        logHttpDelete && method.equals("DELETE")) {
+            logHttpDelete && method.equals("DELETE")) {
       return true;
     } else if (logHttpPost && method.equals("POST") ||
-               logHttpPut && method.equals("PUT")) {
+            logHttpPut && method.equals("PUT")) {
       String contentType = req.getContentType();
       if (contentType != null &&
-          (contentType.equals("application/x-www-form-urlencoded") ||
-          contentType.equals("multipart/form-data") ||
-          contentType.equals("application/json"))) {
+              (contentType.equals("application/x-www-form-urlencoded") ||
+                      contentType.equals("multipart/form-data") ||
+                      contentType.equals("application/json") ||
+                      contentType.equals("text/plain"))) {
         return true;
       }
     }
@@ -109,26 +110,25 @@ public class LoggerFilter implements Filter {
   }
 
   public void doFilter(ServletRequest request, ServletResponse response,
-      FilterChain chain) throws IOException, ServletException {
+                       FilterChain chain) throws IOException, ServletException {
     HttpServletRequest req = (HttpServletRequest) request;
     HttpServletResponse resp = (HttpServletResponse) response;
-    
+
     String method = req.getMethod();
     boolean log = ifLog(method, req);
-   
+
     ServletRequest reqWrap   = request;
     ServletResponse respWrap = response;
+    ResettableStreamHttpServletRequest  resetableReq = null;
     ResettableStreamHttpServletResponse resetableResp = null;
     String reqBody = "-";
     String respBody = null;
-    
+
     if (log) {
       if (method.equals("POST") || method.equals("PUT")) {
-        byte[] bytes = StreamUtils.copyToByteArray(request.getInputStream());
-        reqWrap = new ResettableStreamHttpServletRequest(req, bytes);
-        reqBody = new String(bytes);
+        resetableReq = new ResettableStreamHttpServletRequest(req);
+        reqWrap = resetableReq;
       }
-
       resetableResp = new ResettableStreamHttpServletResponse(resp);
       respWrap = resetableResp;
     }
@@ -138,9 +138,19 @@ public class LoggerFilter implements Filter {
     chain.doFilter(reqWrap, respWrap);
 
     if (log) {
-      byte[] bytes = resetableResp.getRawData();
+      if (resetableReq != null) {
+        // must call after doFilter
+        byte[] bytes = resetableReq.getData();
+        if (bytes == null) {
+          reqBody = req.getParameterMap().toString();
+        } else {
+          reqBody = new String(bytes);
+        }
+      }
+
+      byte[] bytes = resetableResp.getData();
       response.getOutputStream().write(bytes);
-      respBody = new String(bytes);
+      if (bytes != null) respBody = new String(bytes);
     } else if (logError) {
       respBody = (String) request.getAttribute("ApiResultError");
     }
@@ -155,30 +165,37 @@ public class LoggerFilter implements Filter {
   }
 
   private static class ResettableStreamHttpServletRequest extends
-    HttpServletRequestWrapper {
+          HttpServletRequestWrapper {
 
+    private byte rawData[];
     private ServletInputStreamImpl servletStream;
 
-    public ResettableStreamHttpServletRequest(HttpServletRequest request, byte[] rawData) {
+    public ResettableStreamHttpServletRequest(HttpServletRequest request) {
       super(request);
-      this.servletStream = new ServletInputStreamImpl(rawData);
+      this.servletStream = new ServletInputStreamImpl();
+    }
+
+    public byte[] getData() {
+      return rawData;
     }
 
     @Override
     public ServletInputStream getInputStream() throws IOException {
+      rawData = StreamUtils.copyToByteArray(super.getInputStream());
+      servletStream.setData(rawData);
       return servletStream;
     }
 
     @Override
     public BufferedReader getReader() throws IOException {
-      return new BufferedReader(new InputStreamReader(servletStream));
+      return new BufferedReader(new InputStreamReader(getInputStream()));
     }
-    
-    private static class ServletInputStreamImpl extends ServletInputStream {
-      private InputStream stream;
 
-      public ServletInputStreamImpl(byte[] rawData) {
-        stream = new ByteArrayInputStream(rawData);
+    private static class ServletInputStreamImpl extends ServletInputStream {
+      public ByteArrayInputStream stream;
+
+      public void setData(byte[] data) {
+        stream = new ByteArrayInputStream(data);
       }
 
       @Override
@@ -193,11 +210,7 @@ public class LoggerFilter implements Filter {
 
       @Override
       public boolean isFinished() {
-        try {
-          return stream.available() > 0;
-        } catch (IOException e) {
-          return true;
-        }
+        return stream.available() > 0;
       }
 
       @Override
@@ -207,7 +220,7 @@ public class LoggerFilter implements Filter {
   }
 
   private static class ResettableStreamHttpServletResponse extends
-    HttpServletResponseWrapper {
+          HttpServletResponseWrapper {
 
     private ServletOutputStreamImpl servletStream;
 
@@ -216,7 +229,7 @@ public class LoggerFilter implements Filter {
       this.servletStream = new ServletOutputStreamImpl();
     }
 
-    public byte[] getRawData() {
+    public byte[] getData() {
       return this.servletStream.stream.toByteArray();
     }
 

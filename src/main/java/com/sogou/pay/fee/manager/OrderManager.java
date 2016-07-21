@@ -8,6 +8,7 @@ import com.sogou.pay.fee.model.ApiResult;
 import com.sogou.pay.fee.model.Errno;
 import com.sogou.pay.fee.model.PayReturnInfo;
 import com.sogou.pay.fee.model.PhoneInfo;
+import com.sogou.pay.fee.service.blueplus.BpException;
 import com.sogou.pay.fee.service.blueplus.BpService;
 import commons.mybatis.Paging;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,8 @@ public class OrderManager {
 
     private String tokenKey;
 
+    public static final String PHONE_FORMAT = "^(13[0-9]|14[0-9]|15[0-9]|18[0-9]|17[0-9])\\d{8}$";
+
 
     @Autowired
     public OrderManager(Environment env) {
@@ -40,6 +43,9 @@ public class OrderManager {
     }
 
     public ApiResult queryPhoneInfo(List<String> phones) {
+        if(!isPhoneNumber(phones)){
+            return ApiResult.badRequest("wrong phone number");
+        }
         List<PhoneInfo> phoneInfos = bpService.queryPhoneInfos(phones);
         return new ApiResult<List>(phoneInfos);
     }
@@ -68,8 +74,12 @@ public class OrderManager {
         order.setTotalAmount(totalAmount);
         order.setCurPrice(curPrice);
 
-        PayReturnInfo payReturnInfo = bpService.createOrder(order, product, province, operator);
-        return new ApiResult<PayReturnInfo>(payReturnInfo);
+        try {
+            PayReturnInfo payReturnInfo = bpService.createOrder(order, product, province, operator);
+            return new ApiResult<PayReturnInfo>(payReturnInfo);
+        }catch (BpException bpException){
+            return ApiResult.internalError(bpException.getMessage());
+        }
     }
 
     public ApiResult queryOrderDetail(long orderId) {
@@ -143,9 +153,13 @@ public class OrderManager {
     }
 
 
-    public ApiResult list(Order.QueryOrderType queryOrderType, Optional<String> userId, Optional<String> phone, long orderId, int count) {
+    public ApiResult list(Order.QueryOrderType queryOrderType, Optional<String> userId, Optional<String> phone,
+                          Optional<Long> orderId, int count) {
         Paging paging = new Paging().setTable(OrderMapper.Sql.TABLE)
                 .setRowId("orderId").setCount(1, count);
+        if(orderId.isPresent()){
+            paging.setParams("orderId",orderId.get());
+        }
 
         if (queryOrderType == Order.QueryOrderType.BY_PHONE) {
             if (!phone.isPresent()) {
@@ -161,7 +175,6 @@ public class OrderManager {
 
 
         List<Order> orders;
-        paging.setParams("orderId", orderId);
         orders = orderMapper.find(paging);
         for (Order order : orders) {
             refreshOrder(order);
@@ -176,6 +189,17 @@ public class OrderManager {
             needRefresh = true;
         }
         return needRefresh;
+    }
+
+    public boolean isPhoneNumber(List<String> phones){
+        boolean isPhone=true;
+        for(String phone:phones){
+            if(!phone.matches(PHONE_FORMAT)){
+                isPhone=false;
+                break;
+            }
+        }
+        return isPhone;
     }
 
 

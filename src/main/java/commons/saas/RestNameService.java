@@ -6,15 +6,13 @@ import org.springframework.core.env.Environment;
 
 public class RestNameService {
   Map<String, String> map = new HashMap<>();
-  
+
   public RestNameService(Environment env) {
-    String token = null;
-    
+    String token = env.getRequiredProperty("rest.token");
+
     for (int i = 1; i < 101; ++i) {
       String value = env.getProperty("rest.nameservice." + String.valueOf(i));
       if (value == null) continue;
-
-      if (token == null) token = env.getRequiredProperty("rest.token");
 
       String parts[] = value.split(":", 2);
       map.put(parts[0], parts[1].replace("__token__", token));
